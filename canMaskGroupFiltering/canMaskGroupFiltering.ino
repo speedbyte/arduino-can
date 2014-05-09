@@ -35,13 +35,14 @@ void setup()
 
 
   Serial.println("MCP2515 Library Receive Example...");
-  
    
 }
 
 void loop()
 {
-    if(CAN.checkReceive()==3){
+  //checkReceive fcn, return 3 when message is availalbe  
+  //returns 4 when no message arrived (check library code  
+  if(CAN.checkReceive()==3){
      CAN.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
       rxId = CAN.getCanId();                    // Get message ID
       Serial.print("ID: ");
@@ -57,7 +58,7 @@ void loop()
         Serial.print(" ");
       }
       Serial.println();
-      CAN.sendMsgBuf(rxId, 0, 8, rxBuf);   // send data:  id = 0x00, standrad frame, data len = 8, stmp: data buf
+      CAN.sendMsgBuf(rxId, 0, 8, rxBuf);   // send data:  id = rxID, standrad frame, data len = 8, stmp: data buffer (received)
     }
 }
 
