@@ -6,14 +6,13 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
-MCP_CAN CAN0(10);                                      // Set CS to pin 10
 int flag = 0;
 
 void setup()
 {
   Serial.begin(9600);
   // init can bus, baudrate: 100k
-  if(CAN0.begin(CAN_100KBPS) == CAN_OK){
+  if(CAN.begin(CAN_100KBPS) == CAN_OK){
     Serial.print("can init ok!!\r\n");
     flag = 1;
   }
@@ -28,12 +27,12 @@ void loop()
 {
   if(flag == 1){
     // send data:  id = 0x00, standrad frame, data len = 8, stmp: data buf
-    CAN0.sendMsgBuf(0x00, 0, 8, stmp);  
+    CAN.sendMsgBuf(0x00, 0, 8, stmp);  
     Serial.println("message sent");
   }
   if(flag == 0){
     Serial.println("CAN not initialized");
-    if(CAN0.begin(CAN_100KBPS) == CAN_OK){
+    if(CAN.begin(CAN_100KBPS)){
       Serial.print("can init ok!!\r\n");
       flag = 1;
     }
