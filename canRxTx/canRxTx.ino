@@ -1,5 +1,7 @@
 // demo: CAN-BUS Shield, receive data
-// and send it back, just for desired ID
+// and send it back, just for desired IDs
+// show in the UART the received and sent
+// elements
 #include <mcp_can.h>
 #include <SPI.h>
 
@@ -68,10 +70,8 @@ void loop()
        Serial.print(txBuf[i], HEX);
        Serial.print(" ");
      }
+     Serial.println();
      CAN.sendMsgBuf(txId, 0, 8, txBuf);
      delay(1000);
 }
 
-/*********************************************************************************************************
-  END FILE
-*********************************************************************************************************/

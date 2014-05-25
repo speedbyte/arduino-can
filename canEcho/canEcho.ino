@@ -1,5 +1,6 @@
 // demo: CAN-BUS Shield, receive data
 // and send it back, just for desired ID
+// echo for the desired message ID
 #include <mcp_can.h>
 #include <SPI.h>
 
@@ -7,13 +8,11 @@ long unsigned int rxId;
 unsigned char len = 0;
 unsigned char rxBuf[8];
 
-
-
 void setup()
 {
   Serial.begin(9600);
 
-  CAN.begin(CAN_100KBPS);                       // init can bus : baudrate = 500k 
+  CAN.begin(CAN_500KBPS);                       // init can bus : baudrate = 500k 
   pinMode(2, INPUT);                            // Setting pin 2 for /INT input
 
   //Configure the CAN controller
@@ -31,9 +30,6 @@ void setup()
   CAN.init_Filt(3, 0, 0x0000);
   CAN.init_Filt(4, 0, 0x0000);
   CAN.init_Filt(5, 0, 0x0000);
-
-  Serial.println("MCP2515 Library Receive Example...");
-
 }
 
 void loop()
@@ -41,14 +37,14 @@ void loop()
   //checkReceive fcn, return 3 when message is availalbe  
   //returns 4 when no message arrived (check library code)
   if(CAN.checkReceive()==3){
-     CAN.readMsgBuf(&len, rxBuf);              // Read data: len = data length, buf = data byte(s)
-      rxId = CAN.getCanId();                    // Get message ID
+     CAN.readMsgBuf(&len, rxBuf);    // Read data: len = data length, buf = data byte(s)
+      rxId = CAN.getCanId();         // Get message ID
       Serial.print("ID: ");
       Serial.print(rxId, HEX);
       Serial.print("  Data: ");
-      for(int i = 0; i<len; i++)                // Print each byte of the data
+      for(int i = 0; i<len; i++)     // Print each byte of the data
       {
-        if(rxBuf[i] < 0x10)                     // If data byte is less than 0x10, add a leading zero
+        if(rxBuf[i] < 0x10)          // If data byte is less than 0x10, add a leading zero
         {
           Serial.print("0");
         }
@@ -60,6 +56,3 @@ void loop()
     }
 }
 
-/*********************************************************************************************************
-  END FILE
-*********************************************************************************************************/
